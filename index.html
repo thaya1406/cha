@@ -137,15 +137,15 @@
                         </div>
                         <div class="md:w-1/2">
                             <div class="relative">
-                                <div id="chawan-carousel" class="overflow-hidden rounded-lg shadow-lg">
+                                <div id="chawan-carousel" class="overflow-hidden rounded-lg shadow-lg max-w-xs mx-auto">
                                     <div class="carousel-slide">
-                                        <img src="https://placehold.co/400x300/a3e635/ffffff?text=Community+Life" alt="Community Life" class="w-full h-auto object-cover">
+                                        <img src="https://placehold.co/400x250/a3e635/ffffff?text=Community+Life" alt="Community Life" class="w-full h-auto object-cover">
                                     </div>
                                     <div class="carousel-slide hidden">
-                                        <img src="https://placehold.co/400x300/fbbf24/ffffff?text=Children+Playing" alt="Children Playing" class="w-full h-auto object-cover">
+                                        <img src="https://placehold.co/400x250/fbbf24/ffffff?text=Children+Playing" alt="Children Playing" class="w-full h-auto object-cover">
                                     </div>
                                     <div class="carousel-slide hidden">
-                                        <img src="https://placehold.co/400x300/818cf8/ffffff?text=Village+Homes" alt="Village Homes" class="w-full h-auto object-cover">
+                                        <img src="https://placehold.co/400x250/818cf8/ffffff?text=Village+Homes" alt="Village Homes" class="w-full h-auto object-cover">
                                     </div>
                                 </div>
                                 <!-- Carousel Controls -->
@@ -164,11 +164,12 @@
                             </div>
                         </div>
                         <script>
-                            // Simple Carousel for Kampung Chawan section
+                            // Simple Carousel for Kampung Chawan section with auto-slide
                             (function() {
                                 const slides = document.querySelectorAll('#chawan-carousel .carousel-slide');
                                 const indicators = document.querySelectorAll('#chawan-carousel ~ .absolute .carousel-indicator, #chawan-carousel + .absolute .carousel-indicator');
                                 let current = 0;
+                                let intervalId = null;
 
                                 function showSlide(idx) {
                                     slides.forEach((slide, i) => {
@@ -181,17 +182,32 @@
                                     current = idx;
                                 }
 
+                                function nextSlide() {
+                                    showSlide((current + 1) % slides.length);
+                                }
+
+                                function startAutoSlide() {
+                                    if (intervalId) clearInterval(intervalId);
+                                    intervalId = setInterval(nextSlide, 3500);
+                                }
+
                                 document.getElementById('carousel-prev').onclick = function() {
                                     showSlide((current - 1 + slides.length) % slides.length);
+                                    startAutoSlide();
                                 };
                                 document.getElementById('carousel-next').onclick = function() {
-                                    showSlide((current + 1) % slides.length);
+                                    nextSlide();
+                                    startAutoSlide();
                                 };
                                 indicators.forEach((ind, i) => {
-                                    ind.onclick = () => showSlide(i);
+                                    ind.onclick = () => {
+                                        showSlide(i);
+                                        startAutoSlide();
+                                    };
                                 });
 
                                 showSlide(0);
+                                startAutoSlide();
                             })();
                         </script>
                     </div>
